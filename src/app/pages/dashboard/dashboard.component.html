@@ -1,0 +1,113 @@
+<p-toast></p-toast>
+<div class="p-grid dashboard">
+    <div class="p-col-12 p-md-6 p-lg-2">
+        <div class="card overview-box p-d-flex p-flex-column p-pt-2">
+            <div class="p-d-flex p-ai-center muted-text">
+                <h6 class="p-m-0" >ชื่อสัตว์เลี้ยง</h6>
+                
+            </div>
+            <div class="p-d-flex p-jc-between p-mt-3 p-flex-wrap">
+                <div class="p-d-flex p-flex-column">
+                    <!-- <p-dropdown [options]="cities"  optionLabel="name" [showClear]="true"></p-dropdown> -->
+                    <p-dropdown [options]="cities"  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Pet" (onChange)="changedata($event.value)">
+                        <ng-template let-cities pTemplate="item">
+                            <div class="cities-item">
+                                <div>{{cities.name}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <!-- <span class="p-mb-1 fs-xlarge">{{Name_Pet}}</span> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-4">
+        <div class="card overview-box p-d-flex p-flex-column p-pt-2">
+            <div class="p-d-flex p-ai-center muted-text">
+                <h6 class="p-m-0" >อายุ</h6>
+            </div>
+            <div class="p-d-flex p-jc-between p-mt-3 p-flex-wrap">
+                <div class="p-d-flex p-flex-column">
+                    <span class="p-mb-1 fs-xlarge">{{Age_Pet}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-2">
+        <div class="card overview-box p-d-flex p-flex-column p-pt-2">
+            <div class="p-d-flex p-ai-center muted-text">
+                <h6 class="p-m-0" >เพศ</h6>
+            </div>
+            <div class="p-d-flex p-jc-between p-mt-3 p-flex-wrap">
+                <div class="p-d-flex p-flex-column">
+                    <span class="p-mb-1 fs-xlarge">{{Gender_Pet}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-2">
+        <div class="card overview-box p-d-flex p-flex-column p-pt-2">
+            <div class="p-d-flex p-ai-center muted-text">
+                <h6 class="p-m-0" >น้ำหนัก</h6>
+            </div>
+            <div class="p-d-flex p-jc-between p-mt-3 p-flex-wrap">
+                <div class="p-d-flex p-flex-column">
+                    <span class="p-mb-1 fs-xlarge">{{weight_pet}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-2">
+        <div class="card overview-box p-d-flex p-flex-column p-pt-2">
+            <div class="p-d-flex p-ai-center muted-text">
+                <h6 class="p-m-0" >สายพันธุ์</h6>
+            </div>
+            <div class="p-d-flex p-jc-between p-mt-3 p-flex-wrap">
+                <div class="p-d-flex p-flex-column">
+                    <span class="p-mb-1 fs-xlarge">{{breed_pet}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-lg-6">
+        <div class="card height-100 widget-timeline">
+            <div class="card-header">
+                <h5>Timeline</h5>
+                <div>
+                    <button pButton pRipple type="button" icon="pi pi-ellipsis-h" class="p-button-rounded p-button-text p-button-plain" (click)="menu7.toggle($event)"></button>
+                    <p-menu #menu7 [popup]="true" [model]="[{label: 'Update', icon: 'pi pi-fw pi-refresh'},{label: 'Edit', icon: 'pi pi-fw pi-pencil'}]"></p-menu>
+                </div>
+            </div>
+
+            <p-timeline [value]="timelineEvents" align="left" styleClass="customized-timeline">
+                <ng-template pTemplate="marker" let-event>
+                    <span class="custom-marker p-shadow-2 p-p-2" [style.backgroundColor]="event.color">
+                        <i class="marker-icon" [ngClass]="event.icon"></i>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="content" let-event>
+                    <p-card styleClass="p-mb-3" [header]="event.status" [subheader]="event.date">
+                        <p>{{event.description}}</p>
+                    </p-card>
+                </ng-template>
+            </p-timeline>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-lg-6">
+        <div class="card">
+        <p-fullCalendar [events]="events" [options]="options" ></p-fullCalendar>
+    </div> 
+    </div> 
+        <div class="p-col-12 p-lg-6">
+            <div class="card">
+                <h5 class="centerText">Linear Chart</h5>
+                <p-chart type="line" [data]="lineData" [options]="chartsOptions"></p-chart>
+            </div>
+        </div>
+</div>

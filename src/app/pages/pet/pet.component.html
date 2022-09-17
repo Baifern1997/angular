@@ -1,0 +1,426 @@
+<p-toast></p-toast>
+<div class="p-grid table-demo">
+    <div class="p-col-12">
+        <div class="card">
+            <p-table #dt [value]="Pets" [(selection)]="selectedPet" dataKey="pet_id" styleClass="p-datatable-customers"
+                [rowHover]="true" [rows]="5" [paginator]="true" [filterDelay]="0" [(selection)]="selectedPet"
+                [globalFilterFields]="['pet_age','pet_gender','pet_weight','pet_breed']">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <span class="p-input-icon-right">
+                            <button pButton pRipple label="เพิ่ม" icon="pi pi-plus" class="p-button-success p-mr-2"
+                                (click)="openNew()" [disabled]="!selecteduser"></button>
+                        </span>
+                        <span class="p-input-icon-center">
+                            <h5>สัตว์เลี้ยง</h5>
+                        </span>
+                        <span class="p-input-icon-left">
+                            <div class="p-grid">
+                                <div class="p-col">
+                                    <p-dropdown [options]="user" [(ngModel)]="selecteduser" optionLabel="name"
+                                        [filter]="true" filterBy="name" [showClear]="true" placeholder="ค้นหาชื่อลูกค้า"
+                                        (ngModelChange)="selectdata()">
+                                    </p-dropdown>
+                                </div>
+                                <div class="p-col"> <input pInputText type="text"
+                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="ค้นหาสายพันธุ์" /></div>
+                            </div>
+                        </span>
+
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox [disabled]="true"></p-tableHeaderCheckbox>-->
+                        </th>
+                        <th pSortableColumn="pet_name">ชื่อสัตว์เลี้ยง <p-sortIcon field="pet_name"></p-sortIcon>
+                        <th pSortableColumn="pet_age">อายุ <p-sortIcon field="pet_age"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_gender">เพศ <p-sortIcon field="pet_gender"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_weight">น้ำหนัก <p-sortIcon field="pet_weight"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_breed">สายพันธุ์ <p-sortIcon field="pet_breed"></p-sortIcon>
+                        </th>
+                        <th style="width: 8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Pet>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <p-tableRadioButton [value]="Pet" (click)="selectRow()"></p-tableRadioButton>
+                        </td>
+                        <td>{{Pet.pet_name}}</td>
+                        <td>{{Pet.pet_age}}</td>
+                        <td>{{Pet.pet_gender}}</td>
+                        <td>{{Pet.pet_weight}}</td>
+                        <td>{{Pet.pet_breed}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editpet(Pet)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deletePet(Pet)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No Pet found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="card">
+            <p-table #dt [value]="treatments" [(selection)]="selectedtreatment" dataKey="pet_treatment_id"
+                styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+                [(selection)]="selectedtreatment"
+                [globalFilterFields]="['date_treatment','treatment_vaccine','pet_disease','pet_illness','pet_remedy']">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <span class="p-input-icon-right">
+                            <button pButton pRipple label="เพิ่ม" icon="pi pi-plus" class="p-button-success p-mr-2"
+                                (click)="openNewtreatment()" [disabled]="!selectedPet"></button>
+                        </span>
+                       
+                        <span class="p-input-icon-center">
+                            <h5>การรักษา</h5>
+                        </span>
+                        <span class="p-input-icon-left">
+                            <div class="p-grid">
+                                <div class="p-col"> <input pInputText type="text"
+                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="ค้นหาสายพันธุ์" /></div>
+                            </div>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox [disabled]="true"></p-tableHeaderCheckbox> -->
+                        </th>
+                        <th pSortableColumn="date_treatment">วันที่ที่เข้ารักษา <p-sortIcon field="date_treatment">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_name">ชื่อสัตว์เลี้ยง <p-sortIcon field="treatment_vaccine">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_disease">โรคที่ป่วย <p-sortIcon field="pet_disease"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_illness">อาการป่วย<p-sortIcon field="pet_illness"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="pet_remedy">วิธีการรักษา<p-sortIcon field="pet_remedy"></p-sortIcon>
+                        </th>
+                        <th style="width: 8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Treatment>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <p-tableRadioButton [value]="Treatment" (click)="selectRowtreatment()"></p-tableRadioButton>
+                        </td>
+                        <td>{{Treatment.date_treatment}}</td>
+                        <td>{{Treatment.pet_name}}</td>
+                        <td>{{Treatment.pet_disease}}</td>
+                        <td>{{Treatment.pet_illness}}</td>
+                        <td>{{Treatment.pet_remedy}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="edittreatment(Treatment)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deletetreatment(Treatment)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">ไม่มีการรักษา.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="card">
+            <p-table #dt [value]="vaccines" [(selection)]="selectedvaccine" dataKey="pet_vaccine_id"
+                styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+                [(selection)]="selectedvaccine"
+                [globalFilterFields]="['id_vaccine','vaccine_name','vaccine_dec']">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <span class="p-input-icon-right">
+                            <button pButton pRipple label="เพิ่ม" icon="pi pi-plus" class="p-button-success p-mr-2"
+                                (click)="openNewvaccine()" [disabled]="!selectedPet"></button>
+                        </span>
+                       
+                        <span class="p-input-icon-center">
+                            <h5>วัคซีน</h5>
+                        </span>
+                        <span class="p-input-icon-left">
+                            <div class="p-grid">
+                                <div class="p-col"> <input pInputText type="text"
+                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="ค้นหาวัคซีน" /></div>
+                            </div>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox [disabled]="true"></p-tableHeaderCheckbox> -->
+                        </th>
+                        <th pSortableColumn="vaccine_name">ชื่อวัคซีน <p-sortIcon field="vaccine_name">
+                            </p-sortIcon>
+                        </th>
+                        <!-- <th pSortableColumn="treatment_vaccine">วัคซีนที่รักษา <p-sortIcon field="treatment_vaccine">
+                            </p-sortIcon>
+                        </th> -->
+                        <th pSortableColumn="vaccine_dec">รายละเอียดวัคซีน <p-sortIcon field="vaccine_dec"></p-sortIcon>
+                        </th>
+                       <th pSortableColumn="CRATE_DATE">วันที่ฉีดวัคซีน <p-sortIcon field="CRATE_DATE">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-vaccines>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <p-tableRadioButton [value]="vaccine" (click)="selectedvaccine()"></p-tableRadioButton>
+                        </td>
+                        <td>{{vaccines.vaccine_name}}</td>
+                        <td>{{vaccines.vaccine_dec}}</td>
+                        <td>{{vaccines.CRATE_DATE}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editvaccine(vaccines)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deletevaccine(vaccines)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">ไม่มีวัคซีน.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="card">
+            <p-table #dt [value]="appointments" [(selection)]="selectedappointment" dataKey="pet_appointment_id"
+                styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+                [(selection)]="selectedappointment" [globalFilterFields]="['date_appointment','status_appointment']">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <span class="p-input-icon-right">
+                            <button pButton pRipple label="เพิ่ม" icon="pi pi-plus" class="p-button-success p-mr-2"
+                                (click)="openNewappointment()" [disabled]="!selectedtreatment"></button>
+                        </span>
+                        <span class="p-input-icon-center">
+                            <h5>การนัดหมาย</h5>
+                        </span>
+                        <span class="p-input-icon-left">
+                            <div class="p-grid">
+                                <div class="p-col"> <input pInputText type="text"
+                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="ค้นหาสายพันธุ์" /></div>
+                            </div>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox [disabled]="true"></p-tableHeaderCheckbox> -->
+                        </th>
+                        <th pSortableColumn="date_appointment">วันที่นัด <p-sortIcon field="date_appointment">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="status_appointment">สถานะ<p-sortIcon
+                                field="status_appointment"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="description_appointment">คำอธิบาย <p-sortIcon
+                            field="description_appointment"></p-sortIcon>
+                    </th>
+                        
+                        <th style="width: 8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Appointment>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <p-tableRadioButton [value]="Appointment"></p-tableRadioButton>
+                        </td>
+                        <td>{{Appointment.date_appointment}}</td>
+                        <td>{{Appointment.status_appointment}}</td>
+                        <td>{{Appointment.description_appointment}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editappointment(Appointment)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteappointment(Appointment)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">ไม่มีการนัดหมาย.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="petDialog" [style]="{width: '750px'}" header="รายละเอียดสัตว์" [modal]="true" styleClass="p-fluid" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+        <form *ngIf="dataForm" [formGroup]="dataForm" autocomplete="off">
+            <div class="p-field">
+                <label for="pet_name">ชื่อสัตว์เลี้ยง</label>
+                <input type="text" pInputText id="pet_name" formControlName="pet_name" required />
+            </div>
+            <div class="p-field">
+                <label for="pet_date">อายุ:</label>{{strdate}}
+                <!-- <p-inputNumber formControlName="pet_age" mode="decimal" inputId="withoutgrouping" [useGrouping]="false"
+                    required>
+                </p-inputNumber> -->
+                <p-calendar  formControlName="pet_date" dateFormat="dd/mm/yy" inputId="dateformat" [disabledDates]="invalidDates" [maxDate]="dateTime"  [readonlyInput]="true"  (onSelect)="getAge($event)">
+                </p-calendar>
+            </div>
+            <div class="p-field">
+                <label for="pet_gender">เพศ</label>
+                <p-dropdown [options]="gender" formControlName="pet_gender" placeholder="เลือกเพศ"
+                    optionLabel="name" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="p-field">
+                <label for="pet_weight">น้ำหนัก</label>
+                <p-inputNumber formControlName="pet_weight" mode="decimal" inputId="withoutgrouping" [minFractionDigits]="1" [maxFractionDigits]="1"
+                    [useGrouping]="false">
+                </p-inputNumber>
+            </div>
+            <div class="p-field">
+                <label for="pet_breed">ประเภทของสัตว์เลี้ยง</label>
+                <input type="text" pInputText id="pet_type" formControlName="pet_type" required />
+            </div>
+            <div class="p-field">
+                <label for="pet_breed">สายพันธุ์</label>
+                <input type="text" pInputText id="pet_breed" formControlName="pet_breed" required />
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" [disabled]="!dataForm.valid"
+            (click)="savepet()"></button>
+    </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="treatmentDialog" [style]="{width: '750px'}" header="รายละเอียด การรักษา" [modal]="true"
+    styleClass="p-fluid" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+        <form *ngIf="dataFormtreatment" [formGroup]="dataFormtreatment" autocomplete="off">
+            <div class="p-field">
+                <label for="date_treatment">วันที่ที่เข้ารักษา</label>
+                <p-calendar formControlName="date_treatment" [minDate]="today " [readonlyInput]="true" [showTime]="true"
+                    inputId="time"></p-calendar>
+            </div>
+            <!-- <div class="p-field">
+                <label for="treatment_vaccine">วัคซีนที่รักษา</label>
+                <input type="text" pInputText id="treatment_vaccine" formControlName="treatment_vaccine" required />
+            </div> -->
+            <div class="p-field">
+                <label for="pet_disease">โรคที่ป่วย</label>
+                <input type="text" pInputText id="pet_disease" formControlName="pet_disease" required />
+            </div>
+            <div class="p-field">
+                <label for="pet_illness">อาการป่วย</label>
+                <input type="text" pInputText id="pet_illness" formControlName="pet_illness" required />
+            </div>
+            <div class="p-field">
+                <label for="pet_remedy">วิธีการรักษา</label>
+                <input type="text" pInputText id="pet_remedy" formControlName="pet_remedy" required />
+            </div>
+            <div class="p-field">
+                <label for="pet_date">อายุ:</label>{{strdate}}
+                <!-- <p-inputNumber formControlName="pet_age" mode="decimal" inputId="withoutgrouping" [useGrouping]="false"
+                    required>
+                </p-inputNumber> -->
+                <!-- <p-calendar  formControlName="pet_date" dateFormat="dd/mm/yy" inputId="dateformat" [disabledDates]="invalidDates" [maxDate]="dateTime"  [readonlyInput]="true"  (onSelect)="getAge($event)">
+                </p-calendar> -->
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+            (click)="hidetreatmentDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+            [disabled]="!dataFormtreatment.valid" (click)="savetreatment()"></button>
+    </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="vaccineDialog" [style]="{width: '750px'}" header="รายละเอียด วัคซีน" [modal]="true"
+    styleClass="p-fluid" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+        <form *ngIf="dataFormvaccine" [formGroup]="dataFormvaccine" autocomplete="off">
+            <div class="p-field">
+                <label for="vaccine_name">ชื่อวัคซีน</label>
+                <input type="text" pInputText id="vaccine_name" formControlName="vaccine_name" required />
+            </div>
+            <div class="p-field">
+                <label for="vaccine_dec">รายละเอียดวัคซีน</label>
+                <input type="text" pInputText id="vaccine_dec" formControlName="vaccine_dec" required />
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+            (click)="hidevaccineDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+            [disabled]="!dataFormvaccine.valid" (click)="savevaccine()"></button>
+    </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="appointmentDialog" [style]="{width: '750px'}" header="รายละเอียด การนัดหมาย" [modal]="true"
+    styleClass="p-fluid" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+        <form *ngIf="dataFormappointment" [formGroup]="dataFormappointment" autocomplete="off">
+            <div class="p-field">
+                <label for="date_treatment">วันที่นัด</label>
+                <p-calendar formControlName="date_appointment" [minDate]="today " [readonlyInput]="true"
+                    [showTime]="true" inputId="time"></p-calendar>
+            </div>
+            <div class="p-field">
+                <label for="treatment_vaccine">สถานะ</label>
+                <p-dropdown [options]="status" formControlName="status_appointment" placeholder="เลือกสถานะ"
+                    optionLabel="name" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="p-field">
+                <label for="description_appointment">คำอธิบาย</label>
+                <textarea rows="5" cols="30" pInputTextarea autoResize="autoResize" formControlName="description_appointment"></textarea>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+            (click)="hideappointmentDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+            [disabled]="!dataFormappointment.valid" (click)="saveappointment()"></button>
+    </ng-template>
+
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
